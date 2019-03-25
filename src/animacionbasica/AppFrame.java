@@ -6,6 +6,7 @@
 package animacionbasica;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import javax.swing.*;
 import java.util.List;
@@ -18,6 +19,7 @@ public class AppFrame extends javax.swing.JFrame {
 
     List<Dibujable> objetosDibujables;
     Timer timer;
+    Image buffer;
 
     public AppFrame() {
         objetosDibujables = new ArrayList<>();
@@ -38,8 +40,8 @@ public class AppFrame extends javax.swing.JFrame {
 
     @Override
     public void paint(Graphics g) {
-        super.paint(g); //To change body of generated methods, choose Tools | Templates.
-
+        // super.paint(g); //To change body of generated methods, choose Tools | Templates.
+        g.drawImage(buffer, 0, 0, null);
     }
 
     /**
@@ -76,7 +78,7 @@ public class AppFrame extends javax.swing.JFrame {
 
     private void pintarFotograma() {
         
-        Graphics2D g = (Graphics2D)getGraphics();
+        Graphics2D g = (Graphics2D)buffer.getGraphics();
         g.setBackground(Color.WHITE);
         g.clearRect(0, 0, getWidth(), getHeight());
         g.setColor(Color.BLACK);
@@ -90,7 +92,7 @@ public class AppFrame extends javax.swing.JFrame {
                 ((Animable) o).mover();
             }
         });
-        
+        repaint();
     }
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -98,6 +100,7 @@ public class AppFrame extends javax.swing.JFrame {
             pintarFotograma();
         });
         timer.start();
+        buffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
     }//GEN-LAST:event_formWindowOpened
 
     /**
